@@ -4,8 +4,60 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "054aac80b1684219b5fb28008100fe8b",
+    "content-hash": "aaecdb82542d0fa9d89cfe5722402a4e",
     "packages": [
+        {
+            "name": "anandsiddharth/laravel-paytm-wallet",
+            "version": "v1.0.16",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/anandsiddharth/laravel-paytm-wallet.git",
+                "reference": "5cf4c586e9b40cf01d8b9bc35e67f8d932318d4b"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/anandsiddharth/laravel-paytm-wallet/zipball/5cf4c586e9b40cf01d8b9bc35e67f8d932318d4b",
+                "reference": "5cf4c586e9b40cf01d8b9bc35e67f8d932318d4b",
+                "shasum": ""
+            },
+            "require": {
+                "illuminate/contracts": ">=5.0",
+                "illuminate/support": ">=5.0",
+                "php": ">=5.4.0"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "Anand\\LaravelPaytmWallet\\PaytmWalletServiceProvider"
+                    ],
+                    "aliases": {
+                        "PaytmWallet": "Anand\\LaravelPaytmWallet\\Facades\\PaytmWallet"
+                    }
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Anand\\LaravelPaytmWallet\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Anand Siddharth",
+                    "email": "anandsiddharth21@gmail.com"
+                }
+            ],
+            "description": "Integrate paytm wallet easily with this package. This package uses official Paytm PHP SDK's",
+            "keywords": [
+                "laravel",
+                "paytm wallet"
+            ],
+            "time": "2020-03-26T10:44:01+00:00"
+        },
         {
             "name": "asm89/stack-cors",
             "version": "v2.0.1",

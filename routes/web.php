@@ -59,6 +59,12 @@ Route::get('/showmail', function () {
 Route::get('/sendmail', "CoustomerController@sendmail");
 Route::get('/addnewcoustomer', "CoustomerController@Addnewc")->name('c.add');
 
-Route::get('/cbill', function () {
-    return view('cbill');
-});
+Route::get('/cbill', "BillController@index");
+
+Route::get('/initiate', 'BillController@initiate')->name('initiate.payment');
+Route::post('/payment', 'BillController@pay')->name('make.payment');
+Route::post('/payment/status', 'BillController@paymentCallback')->name('status');
+
+
+Route::get('/payment', 'BillController@pay');
+Route::get('/payment/status', 'BillController@paymentCallback');

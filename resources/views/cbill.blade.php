@@ -28,9 +28,30 @@
                 <div class="card-header">{{ __('Dashboard') }}</div>
 
                 <div  class="row card-body">
-                    <div class="col-auto">
-                        Select Cusomer:@livewire('coustomerselect')
+                    <div class="row">
+                        <div class="col-lg-12 ">
+                        <form action="">
+                            <Select name="cus" class="select">
+                                @foreach ($cus as $item)
+                                    <option class="option" value="{{ $item->name }}">{{ $item->name }}</option>
+                                @endforeach
+                            </Select>
+                            <button class="btn-success">Add Cus</button>
+                        </form>
+                        </div>
                     </div>
+                    <div class="row">
+                     <div class="col">
+                         <form action="">
+                            <Select name="mad" class="select">
+                                @foreach ($mad as $item)
+                                    <option class="option" value="{{ $item->name }}">{{ $item->name }}</option>
+                                @endforeach
+                            </Select>
+                            <button class="btn-success">Add Mad</button>
+                        </form>
+                     </div>
+                     </div>
             </div>
         </div>
 
