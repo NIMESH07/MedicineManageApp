@@ -21,30 +21,28 @@ class MedicineSeeder extends Seeder
         Coustomers::truncate();
         $faker = \Faker\Factory::create();
         User::Create([
-            'name'=>'Admin',
-            'email'=>'n@n.com',
-            'password'=>'12345678',
+            'name' => 'Admin',
+            'email' => 'n@n.com',
+            'password' => base64_encode('12345678'),
         ]);
-        for ($i = 0; $i < 100; $i++)
-        {
+        for ($i = 0; $i < 100; $i++) {
             Medicine::create([
-                'name'=>$faker->name,
-                'ts'=>$faker->numberBetween(1,100),
-                'ns'=>$faker->numberBetween(1,100),
-                'cs'=>$faker->numberBetween(1,100),
-                'price'=>$faker->numberBetween(1,100),
-                'mrp'=>$faker->numberBetween(1,100),
-                'exdate'=>$faker->date,
-                'orderstatus'=>'N',
+                'name' => $faker->name,
+                'ts' => $faker->numberBetween(1, 100),
+                'ns' => $faker->numberBetween(1, 100),
+                'cs' => $faker->numberBetween(1, 100),
+                'price' => $faker->numberBetween(1, 100),
+                'mrp' => $faker->numberBetween(1, 100),
+                'exdate' => $faker->date,
+                'orderstatus' => 'N',
             ]);
             Coustomers::create([
-                'name'=>$faker->name,
-                'mobile_no'=>$faker->numberBetween(1111111111,9999999999),
-                'address'=>$faker->address,
-                'imgname'=>$faker->imageUrl(),
-                'status'=>'1',
+                'name' => $faker->name,
+                'mobile_no' => $faker->numberBetween(9000000000, 9999999999),
+                'address' => $faker->address,
+                'imgname' => $faker->imageUrl(),
+                'status' => '1',
             ]);
         }
-
     }
 }

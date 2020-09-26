@@ -54,7 +54,8 @@
                     <!-- Left Side Of Navbar -->
                     <ul class="navbar-nav ml-auto">
                         <a href="cviewdemo" class="anav-link">Gallery</a>|
-                        <a href="showmail">Mail</a>
+                        <a href="showmail">Mail</a>|
+                         <a href="testchart">Chart</a>
                     </ul>
 
                     <!-- Right Side Of Navbar -->

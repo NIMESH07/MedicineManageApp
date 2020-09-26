@@ -39,6 +39,7 @@ Route::get('/viewmedicinewithid', "MedicineController@viewmedicinewithid");
 Route::post('/upmedicine', "MedicineController@medicineupdate");
 Route::get('/deletemedicinewithid', "MedicineController@deletemedicinewithid");
 Route::get('/printmedicinewithid', "MedicineController@printmedicinewithid");
+Route::get('/testchart', "MedicineController@testchart");
 
 Route::get('/excel', "MedicineController@getExcel");
 

@@ -23,7 +23,8 @@ use setasign\Fpdi\PdfReader;
 
 class MedicineController extends Controller
 {
-    public function __construct(){
+    public function __construct()
+    {
         $this->middleware('auth');
     }
 
@@ -35,17 +36,17 @@ class MedicineController extends Controller
     function insermedicinedata(Request $request)
     {
         $mad = new Medicine();
-        $mad->name=$request->name;
-        $mad->ts=$request->ts;
-        $mad->ns=$request->ns;
-        $mad->cs=$request->cs;
-        $mad->price=$request->price;
-        $mad->mrp=$request->mrp;
-        $mad->exdate=$request->exdate;
-        $mad->orderstatus="N";
+        $mad->name = $request->name;
+        $mad->ts = $request->ts;
+        $mad->ns = $request->ns;
+        $mad->cs = $request->cs;
+        $mad->price = $request->price;
+        $mad->mrp = $request->mrp;
+        $mad->exdate = $request->exdate;
+        $mad->orderstatus = "N";
         $mad->save();
-       $msg=$request->name;
-        session()->flash('msg',"New ".$mad->name." Medicine Added..");
+        $msg = $request->name;
+        session()->flash('msg', "New " . $mad->name . " Medicine Added..");
         return redirect('viewmedicine');
         //return redirect('viewmedicine',compact('msg'));
     }
@@ -53,62 +54,56 @@ class MedicineController extends Controller
     function viewmedicine()
     {
         $data = Medicine::paginate(5);
-        return view('medicineview',compact('data'));
+        return view('medicineview', compact('data'));
     }
 
     function viewmedicinewithid(Request $request)
     {
-        $mad = Medicine::find( base64_decode($request->a));
-        if($mad==null)
-        {
+        $mad = Medicine::find(base64_decode($request->a));
+        if ($mad == null) {
             echo "Data Not Found";
             echo "<br>
                 You can
             <a href='viewmedicine'>View All Medicine</a>";
-        }
-        else{
+        } else {
 
-            return view('updatemadicine',compact('mad'));
+            return view('updatemadicine', compact('mad'));
         }
-
     }
 
     public function medicineupdate(Request $request)
     {
         $affected = Medicine::where('id', $request->id)
-        ->update([
-            'name' => $request->name,
-            'ts'=> $request->ts,
-            'ns'=> $request->ns,
-            'cs'=> $request->cs,
-            'price'=> $request->price,
-            'mrp'=> $request->mrp,
-            'exdate'=> $request->exdate,
+            ->update([
+                'name' => $request->name,
+                'ts' => $request->ts,
+                'ns' => $request->ns,
+                'cs' => $request->cs,
+                'price' => $request->price,
+                'mrp' => $request->mrp,
+                'exdate' => $request->exdate,
             ]);
-            return redirect('viewmedicine');
+        return redirect('viewmedicine');
     }
     public function deletemedicinewithid(Request $request)
     {
-        $mad =Medicine::where('id',$request->a)->delete();
+        $mad = Medicine::where('id', $request->a)->delete();
 
-        if($mad==null)
-        {
+        if ($mad == null) {
 
-          //  echo $request->a;
+            //  echo $request->a;
             echo "Data Not Found";
             echo "<a href='viewmedicine'>View All Medicine</a>";
-        }
-        else{
+        } else {
 
             return redirect('viewmedicine');
         }
-
-
     }
 
-    public function getExcel(Request $request){
+    public function getExcel(Request $request)
+    {
 
-        $medicines = Medicine::select('id','name','ts')->get()->toArray();
+        $medicines = Medicine::select('id', 'name', 'ts')->get()->toArray();
         $reader = new \PhpOffice\PhpSpreadsheet\Reader\Xlsx();
         $spreadsheet = new Spreadsheet();
         $worksheet = $spreadsheet->getActiveSheet();
@@ -125,7 +120,7 @@ class MedicineController extends Controller
         // }
 
 
-        $worksheet->fromArray($medicines,NULL,'A1');
+        $worksheet->fromArray($medicines, NULL, 'A1');
 
         $writer = \PhpOffice\PhpSpreadsheet\IOFactory::createWriter($spreadsheet, 'Xls');
         header('Content-type: application/vnd.ms-excel');
@@ -135,26 +130,53 @@ class MedicineController extends Controller
 
     public function printmedicinewithid(Request $request)
     {
-        $mad = Medicine::find( base64_decode($request->mid));
-        $height=150; // Height of Current Page
-        $width=148; // Width of Current Page
-        $pdf = new FPDF('P','mm',[$width,$height]); // paper size
+        $mad = Medicine::find(base64_decode($request->mid));
+        $height = 150; // Height of Current Page
+        $width = 148; // Width of Current Page
+        $pdf = new FPDF('P', 'mm', [$width, $height]); // paper size
 
         /******  CREATE NEW PAGE & SET FONT SIZE *******/
         $pdf->AddPage(); // create new page
-        $pdf->SetFont('Arial','B',20); /*set font to arial, bold, 14pt*/
+        $pdf->SetFont('Arial', 'B', 20); /*set font to arial, bold, 14pt*/
         $pdf->SetDrawColor(001);
 
-        $pdf->Text(5,10,'ID');
-        $pdf->Text(20,10,'NAME');
-        $pdf->Text(55,10,"Total Stock");
+        $pdf->Text(5, 10, 'ID');
+        $pdf->Text(20, 10, 'NAME');
+        $pdf->Text(55, 10, "Total Stock");
 
-        $pdf->SetFont('Arial','',15); /*set font to arial, bold, 14pt*/
+        $pdf->SetFont('Arial', '', 15); /*set font to arial, bold, 14pt*/
 
-        $pdf->Text(5,20,$mad['id']);
-        $pdf->Text(20,20,$mad['name']);
-        $pdf->Text(55,20,$mad['ts']);
+        $pdf->Text(5, 20, $mad['id']);
+        $pdf->Text(20, 20, $mad['name']);
+        $pdf->Text(55, 20, $mad['ts']);
         $pdf->Output('D');
         //return redirect('viewmedicine');
+    }
+
+    public function testchart(Request $request)
+    {
+        $mad = Medicine::orderBy('ts', 'DESC')->take(50)->get();
+        $dataPoints = array();
+        foreach ($mad as $item) {
+            if ($item->ts > 99) {
+                array_push($dataPoints, array("label" => $item->name, "y" => $item->ts, "indexLabel" => "Highest"));
+            } else {
+                array_push($dataPoints, array("label" => $item->name, "y" => $item->ts));
+            }
+        }
+        //Temp Data
+        // $dataPoints = array(
+        //     array("label" => "Nimesh", "y" => 1),
+        //     array("label" => "Entertainment", "y" => 2),
+        //     array("label" => "Lifestyle", "y" => 3),
+        //     array("label" => "Business", "y" => 4),
+        //     array("label" => "Music & Audio", "y" => 5),
+        //     array("label" => "Personalization", "y" => 6),
+        //     array("label" => "Tools", "y" => 7),
+        //     array("label" => "Books & Reference", "y" => 8),
+        //     array("label" => "Travel & Local", "y" => 9),
+        //     array("label" => "Puzzle", "y" => 10)
+        // );
+        return view('testchart', compact('dataPoints'));
     }
 }
