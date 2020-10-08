@@ -1,6 +1,22 @@
 <!DOCTYPE HTML>
 <html>
 <head>
+
+    <script>
+        function myFunction()
+        {
+            var elem = document.getElementById("chartContainer");
+            if (elem.requestFullscreen) {
+                elem.requestFullscreen();
+            } else if (elem.mozRequestFullScreen) { /* Firefox */
+                elem.mozRequestFullScreen();
+            } else if (elem.webkitRequestFullscreen) { /* Chrome, Safari & Opera */
+                elem.webkitRequestFullscreen();
+            } else if (elem.msRequestFullscreen) { /* IE/Edge */
+                elem.msRequestFullscreen();
+            }
+        }
+    </script>
 <script>
 
 window.onload = function () {
@@ -26,12 +42,16 @@ chart.render();
 </script>
 </head>
 <body>
-      <a href="{{ url()->previous() }}">Back</a>
+    <a id="chartContaine"  href="{{ url()->previous() }}">Back</a>
     <div id="chartContainer" style="height: 370px; width: 100%;">
         <!-- helo-->
     </div>
 
 
     <script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
+
+
+        <button onclick="myFunction();">hello</button>
+
 </body>
 </html>

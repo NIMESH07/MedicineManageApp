@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Medicine;
 use FPDF;
+use Illuminate\Support\Facades\Http;
+
 //add for excel
 require app_path('MyService/ExcelConfig/Excel/vendor/autoload.php');
 require app_path('MyService/ExcelConfig/Excel/vendor/phpoffice/phpspreadsheet/src/Bootstrap.php');
@@ -16,8 +18,6 @@ require_once app_path('MyService/PDFConfig/FPDI/vendor/setasign/fpdi/src/autoloa
 use PhpOffice\PhpSpreadsheet\IOFactory;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
-
-
 use setasign\Fpdi\Fpdi;
 use setasign\Fpdi\PdfReader;
 
@@ -103,7 +103,7 @@ class MedicineController extends Controller
     public function getExcel(Request $request)
     {
 
-        $medicines = Medicine::select('id', 'name', 'ts')->get()->toArray();
+        $medicines = Medicine::all()->toArray();
         $reader = new \PhpOffice\PhpSpreadsheet\Reader\Xlsx();
         $spreadsheet = new Spreadsheet();
         $worksheet = $spreadsheet->getActiveSheet();
@@ -119,8 +119,17 @@ class MedicineController extends Controller
         //     $row++;
         // }
 
+        $worksheet->getCell("A1")->setValue("ID");
+        $worksheet->getCell("B1")->setValue("Name");
+        $worksheet->getCell("C1")->setValue("Ts");
+        $worksheet->getCell("D1")->setValue("NS");
+        $worksheet->getCell("E1")->setValue("CS");
+        $worksheet->getCell("F1")->setValue("Price");
+        $worksheet->getCell("G1")->setValue("Mrp");
+        $worksheet->getCell("H1")->setValue("DATA");
 
-        $worksheet->fromArray($medicines, NULL, 'A1');
+
+        $worksheet->fromArray($medicines, NULL, 'A2');
 
         $writer = \PhpOffice\PhpSpreadsheet\IOFactory::createWriter($spreadsheet, 'Xls');
         header('Content-type: application/vnd.ms-excel');
@@ -155,7 +164,8 @@ class MedicineController extends Controller
 
     public function testchart(Request $request)
     {
-        $mad = Medicine::orderBy('ts', 'DESC')->take(50)->get();
+        $mad = Medicine::take(20)->get();
+        //$mad = Medicine::orderBy('ts', 'DESC')->take(20)->get();
         $dataPoints = array();
         foreach ($mad as $item) {
             if ($item->ts > 99) {
@@ -177,6 +187,8 @@ class MedicineController extends Controller
         //     array("label" => "Travel & Local", "y" => 9),
         //     array("label" => "Puzzle", "y" => 10)
         // );
+        // $response = Http::get('http://www.google.com');
+        // dd($response->transferStats);
         return view('testchart', compact('dataPoints'));
     }
 }

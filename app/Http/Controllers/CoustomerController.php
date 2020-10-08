@@ -208,6 +208,7 @@ class CoustomerController extends Controller
 
     public function Addnewc(Request $request)
     {
+        //this funcution is use for insert customer data intable Using AJAX
         $cus = new Coustomers();
         $cus->name = $request->name;
         $cus->mobile_no = $request->mobile_no;
